@@ -1,0 +1,13 @@
+{
+  "name": "backpackernews-node",
+  "version": "1.0.0",
+  "description": "The backend of backpacker news. ",
+  "main": "index.js",
+  "repository": "https://github.com/hughdevore/backpackernews-node",
+  "author": "Hughie Devore",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "graphql-yoga": "^1.13.1"
+  }
+}
