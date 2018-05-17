@@ -11,3 +11,9 @@ I'm building this project on top of the great work Maira Bello did in this amazi
 ## Further Info
 
 For more information on this project please look through the code. I will work to add README's for the majority of the directories in this repo.
+
+## Current Stopping Point
+
+I am currently at the beginning of this chapter:
+
+https://www.howtographql.com/graphql-js/6-authentication/
