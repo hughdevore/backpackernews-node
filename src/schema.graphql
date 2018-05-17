@@ -10,8 +10,4 @@ type Mutation {
     deleteLink(id: ID!): String!
 }
 
-type Link {
-    id: ID!
-    description: String!
-    url: String!
-}
+# import Link from "./generated/prisma.graphql"

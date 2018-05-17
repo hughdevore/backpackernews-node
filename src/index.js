@@ -1,50 +1,39 @@
 const { GraphQLServer } = require('graphql-yoga')
-const _ = require('underscore')
-
-
-// Populate the links feed
-let links = [{
-  id: 'link-0',
-  url: 'www.hughdevore.com',
-  description: 'GraphQL developer, Backpacker, Sasquatch'
-}]
-
-// Determine the length of the link feed
-let idCount = links.length
+const { Prisma } = require('prisma-binding')
 
 // Declare how our GraphQL schema should resolve
 const resolvers = {
   Query: {
     info: () => `This is the GraphQL API of Backpacker News.`,
-    feed: () => links,
+    feed: (root, args, context, info) => {
+      return context.db.query.links({}, info)
+    },
   },
   Mutation: {
-    postLink: (root, args) => {
+    postLink: (root, args, context, info) => {
       // Create the new link to add to the feed
-      const link = {
-        id: `link-${idCount ++}`,
-        description: args.description,
-        url: args.url,
-      }
-      // Add the link to the feed
-      links.push(link)
-      // Return the new link
-      return link
+      return context.db.mutation.createLink({
+        data: {
+          url: args.url,
+          description: args.description,
+        },
+      }, info)
     },
-    updateLink: (root, args) => {
-      // Find the link by ID
-      const link = links.findIndex(link => link.id == args.id)
-      // Use the args to set the new link data
-      links[link].url = args.url ? args.url : link.url
-      links[link].description = args.description ? args.description : link.description
-      return links[link]
+    updateLink: (root, args, context, info) => {
+      return context.db.mutation.updateLink({
+        data: {
+          url: args.url,
+          description: args.description,
+        },
+      }, info)
     },
-    deleteLink: (root, args) => {
-      links = _.reject(links, (link) => {
-        return link.id == args.id
-      })
-      return `The link with ID: ${args.id} has been deleted.`
-    },
+    // deleteLink: (root, args, context, info) => {
+    //   return context.db.mutation.deleteLink({
+    //     data: {
+    //       id: args.id,
+    //     },
+    //   }, info)
+    // },
   },
 }
 
@@ -52,5 +41,14 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   resolvers,
+  context: req => ({
+    ...req,
+    db: new Prisma({
+      typeDefs: 'src/generated/prisma.graphql',
+      endpoint: 'http://localhost:4466',
+      secret: 'backpackerhughs',
+      debug: true,
+    }),
+  }),
 })
 server.start(() => console.log(`The server is running on http::localhost:4000`))

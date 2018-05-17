@@ -9,6 +9,6 @@
   "private": false,
   "dependencies": {
     "graphql-yoga": "^1.13.1",
-    "underscore": "^1.9.0"
+    "prisma-binding": "^2.0.0"
   }
 }

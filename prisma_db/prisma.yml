@@ -1,0 +1,14 @@
+# Name our prisma service
+service: backpackernews
+
+# The current stage of development
+stage: dev
+
+# Tell prisma where the datamodel lives
+datamodel: datamodel.graphql
+
+# Define the secret for our JWT tokens
+secret: backpackerhughs
+
+# Define the endpoint to use
+endpoint: https://us1.prisma.sh/hughie-devore-502ae5/backpacker_news/dev
